@@ -1,11 +1,11 @@
 {
-  "version": "0.8.4",
-  "url": "https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/v0.8.4/rpx-plc.bin",
-  "sha256": "c9b975068c2340bf6f99a5541fba8aef5d6f1dffb08346dcd2eb01c018ec8990",
-  "size": 1439824,
-  "notes": "Merker di sistema e di clock come in TIA (FirstScan, DiagStatusUpdate, AlwaysTRUE, AlwaysFALSE, Clock_10Hz...Clock_0.5Hz), con le variabili create automaticamente nella tabella standard.",
-  "factory_sha256": "b377d029213e18f755743fde56e956355be128abb96d9afc64936dcb18d26542",
-  "factory_size": 1570896,
+  "version": "0.8.5",
+  "url": "https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/v0.8.5/rpx-plc.bin",
+  "sha256": "bfb147b794bcc1cbd4022e491d1086ed5f065191601b0b894a4f7cf6a3d99eb5",
+  "size": 1488048,
+  "notes": "Licenze e note legali nell'ambiente di ingegneria (menu ? → Licenze e note legali), avvisi delle licenze di terze parti, licenza d'uso del firmware; simulatore rinominato RPX-SIM; manuale 0.8.5 con il capitolo Licenze e note legali.",
+  "factory_sha256": "c2eed693ba9983a7a4af5abfeb5a1d68a7ec547d5ec9b3575c026a2a2e9e09ce",
+  "factory_size": 1619120,
   "date": "2026-11-23",
-  "manual": "RPX-PLC-Manuale-0.8.4.pdf"
+  "manual": "RPX-PLC-Manuale-0.8.5.pdf"
 }

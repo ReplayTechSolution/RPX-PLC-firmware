@@ -70,7 +70,7 @@
     <p style="margin:0"><a href="manuale.html">Manuale d'uso di RPX-PLC</a> · <a href="https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases">Versioni pubblicate</a> · <a href="https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/flasher/RPX-PLC-Flasher.exe">Programma per Windows (senza Chrome/Edge)</a></p>
   </div>
 </main>
-<footer class="wrap">RPX-PLC è un prodotto Replay Tech Solution. Il flasher usa ESP Web Tools.</footer>
+<footer class="wrap">RPX-PLC è un prodotto Replay Tech Solution, distribuito secondo la <a href="licenze/LICENZA.txt">licenza d'uso</a>: non è un controllore di sicurezza. Componenti di terze parti: <a href="licenze/LICENZE-TERZE-PARTI-FIRMWARE.txt">firmware</a>, <a href="licenze/LICENZE-TERZE-PARTI-FLASHER.txt">programma per Windows</a> (GPL, <a href="https://github.com/ReplayTechSolution/RPX-PLC-firmware/tree/main/flasher">sorgente</a>). Questa pagina usa ESP Web Tools (Apache 2.0).<br>SIEMENS, SIMATIC, S7-1200, TIA Portal e PLCSIM sono marchi di Siemens AG; RPX-PLC non è affiliato a Siemens né approvato da Siemens.</footer>
 <script>
   fetch('firmware/manifest.json', { cache: 'no-store' }).then(r => r.json()).then(m => {
     document.getElementById('ver').textContent = `Versione ${m.version}` + (m.date ? ` del ${m.date.split('-').reverse().join('/')}` : '');

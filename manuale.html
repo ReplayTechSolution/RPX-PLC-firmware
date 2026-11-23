@@ -25,12 +25,12 @@
 <body><header><div class="wrap"><a href="index.html">&#9654; RPX-PLC</a></div></header><div class="bar"></div>
 <div class="wrap"><main>
 <h1>Manuale d'uso di RPX-PLC</h1>
-<nav><b>Indice</b><ol><li><a href="#1-la-scheda">La scheda</a></li><li><a href="#2-prima-installazione">Prima installazione</a></li><li><a href="#3-lambiente-di-ingegneria">L'ambiente di ingegneria</a></li><li><a href="#4-configurazione-del-dispositivo">Configurazione del dispositivo</a></li><li><a href="#5-variabili">Variabili</a></li><li><a href="#6-blocchi">Blocchi</a></li><li><a href="#7-ladder-lad">Ladder (LAD)</a></li><li><a href="#8-scl">SCL</a></li><li><a href="#9-sfc-sequenze">SFC (sequenze)</a></li><li><a href="#10-simulatore">Simulatore</a></li><li><a href="#11-online-osservazione-tabelle-di-controllo-forzamento">Online: osservazione, tabelle di controllo, forzamento</a></li><li><a href="#12-modbus">Modbus</a></li><li><a href="#13-seriale-libera-rs485">Seriale libera (RS485)</a></li><li><a href="#14-ora-del-giorno">Ora del giorno</a></li><li><a href="#15-protezione">Protezione</a></li><li><a href="#16-aggiornamento-del-firmware">Aggiornamento del firmware</a></li><li><a href="#17-backup-e-ripristino">Backup e ripristino</a></li><li><a href="#18-impostazioni-di-fabbrica">Impostazioni di fabbrica</a></li><li><a href="#19-diagnostica-e-problemi-frequenti">Diagnostica e problemi frequenti</a></li></ol></nav>
+<nav><b>Indice</b><ol><li><a href="#1-la-scheda">La scheda</a></li><li><a href="#2-prima-installazione">Prima installazione</a></li><li><a href="#3-lambiente-di-ingegneria">L'ambiente di ingegneria</a></li><li><a href="#4-configurazione-del-dispositivo">Configurazione del dispositivo</a></li><li><a href="#5-variabili">Variabili</a></li><li><a href="#6-blocchi">Blocchi</a></li><li><a href="#7-ladder-lad">Ladder (LAD)</a></li><li><a href="#8-scl">SCL</a></li><li><a href="#9-sfc-sequenze">SFC (sequenze)</a></li><li><a href="#10-simulatore">Simulatore</a></li><li><a href="#11-online-osservazione-tabelle-di-controllo-forzamento">Online: osservazione, tabelle di controllo, forzamento</a></li><li><a href="#12-modbus">Modbus</a></li><li><a href="#13-seriale-libera-rs485">Seriale libera (RS485)</a></li><li><a href="#14-ora-del-giorno">Ora del giorno</a></li><li><a href="#15-protezione">Protezione</a></li><li><a href="#16-aggiornamento-del-firmware">Aggiornamento del firmware</a></li><li><a href="#17-backup-e-ripristino">Backup e ripristino</a></li><li><a href="#18-impostazioni-di-fabbrica">Impostazioni di fabbrica</a></li><li><a href="#19-diagnostica-e-problemi-frequenti">Diagnostica e problemi frequenti</a></li><li><a href="#20-licenze-e-note-legali">Licenze e note legali</a></li></ol></nav>
 
 <p>RPX-PLC trasforma la scheda <strong>Waveshare ESP32-S3-ETH-8DI-8RO</strong> in un controllore programmabile con 8 ingressi digitali,
 8 uscite a relè, RS485, Ethernet e WiFi. Si programma dal browser con un ambiente di ingegneria in stile TIA Portal, in
 <strong>Ladder (LAD)</strong>, <strong>SCL</strong> e <strong>SFC</strong>, che si possono usare insieme nello stesso progetto.</p>
-<p>Questo manuale vale per il firmware <strong>0.8.4</strong>.</p>
+<p>Questo manuale vale per il firmware <strong>0.8.5</strong>.</p>
 <h2 id="1-la-scheda">1. La scheda</h2>
 <table>
 <thead>
@@ -146,7 +146,7 @@ quella di lavoro:</p>
 <tr>
 <td>Avvia simulazione</td>
 <td>–</td>
-<td>esegue il programma nel browser (RPX-PLCSIM), senza scheda</td>
+<td>esegue il programma nel browser (RPX-SIM), senza scheda</td>
 </tr>
 <tr>
 <td>RUN / STOP</td>
@@ -674,4 +674,18 @@ errori di programma, caricamenti, aggiornamenti).</p>
 </tr>
 </tbody>
 </table>
+<h2 id="20-licenze-e-note-legali">20. Licenze e note legali</h2>
+<p><strong>Non è un controllore di sicurezza.</strong> RPX-PLC non è certificato per funzioni di sicurezza (EN ISO 13849, IEC 62061):
+arresto di emergenza, ripari, barriere e interblocchi di sicurezza vanno realizzati con dispositivi e circuiti di
+sicurezza indipendenti dal PLC.</p>
+<p><strong>Licenza d'uso.</strong> Il firmware, l'ambiente di ingegneria e il simulatore sono concessi in uso gratuitamente, senza
+garanzia, secondo la licenza d'uso di RPX-PLC (<code>LICENZA.txt</code>). Il firmware contiene componenti di terze parti
+(ESP-IDF, FreeRTOS, lwIP, Mbed TLS, cJSON, littlefs e altri) con le loro licenze, elencate in
+<code>LICENZE-TERZE-PARTI-FIRMWARE.txt</code>. Entrambi i testi si leggono dal PLC (menu <strong>? → Licenze e note legali</strong>), sono
+allegati a ogni versione pubblicata e sono sul sito di installazione.</p>
+<p><strong>Programma per Windows.</strong> RPX-PLC Flasher usa esptool ed è distribuito con licenza GNU GPL versione 2 o successiva:
+il sorgente completo è pubblico, nella cartella <code>flasher</code> del repository <code>ReplayTechSolution/RPX-PLC-firmware</code>.</p>
+<p><strong>Marchi.</strong> SIEMENS, SIMATIC, S7-1200, TIA Portal e PLCSIM sono marchi di Siemens AG; Waveshare è un marchio di
+Waveshare Electronics; ESP32 è un marchio di Espressif Systems. RPX-PLC non è affiliato a queste aziende né approvato
+da esse: i nomi sono citati solo per descrivere la compatibilità e il modo di lavorare.</p>
 </main></div></body></html>
