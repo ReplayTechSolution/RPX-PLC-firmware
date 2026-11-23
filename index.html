@@ -25,7 +25,8 @@
   li { margin: 4px 0; }
   .muted { color: var(--muted); }
   .install { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
-  esp-web-install-button button { background: var(--green); color: #fff; border: 0; border-radius: 4px; padding: 11px 22px; font-size: 16px; font-weight: 600; cursor: pointer; }
+  .go { background: var(--green); color: #fff; border: 0; border-radius: 4px; padding: 11px 26px; font-size: 16px; font-weight: 600; cursor: pointer; }
+  .go:hover { filter: brightness(1.1); }
   .warn { border-left: 4px solid #c96a00; }
   a { color: var(--green); }
   code { background: rgba(127,127,127,.15); padding: 1px 5px; border-radius: 3px; }
@@ -34,7 +35,7 @@
 </head>
 <body>
 <header><div class="wrap"><div class="brand">
-  <svg width="26" height="26" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2l11 6-11 6z" fill="#0b8a43"/></svg>RPX<span style="font-weight:300">-PLC</span>
+  <svg width="26" height="26" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2l11 6-11 6z" fill="#0b8a43"/></svg><span>RPX<span style="font-weight:300">-PLC</span></span>
 </div><div class="muted" style="color:#9fb0bf;font-size:13px">Replay Tech Solution · firmware e installazione</div></div></header>
 <div class="bar"></div>
 <main class="wrap">
@@ -43,6 +44,7 @@
     <p class="muted" style="margin:0">Per una scheda <b>Waveshare ESP32-S3-ETH-8DI-8RO</b> nuova o da reinstallare. Per aggiornare un PLC già installato non serve: si fa dalla rete, nell'ambiente di ingegneria (<i>Online e diagnostica → Firmware</i>).</p>
     <div class="install">
       <esp-web-install-button manifest="firmware/manifest-webtools.json">
+        <button slot="activate" class="go">Installa</button>
         <span slot="unsupported">Questo browser non può programmare la scheda: usa <b>Chrome</b> o <b>Edge</b> su PC.</span>
         <span slot="not-allowed">Serve una pagina sicura (https).</span>
       </esp-web-install-button>
