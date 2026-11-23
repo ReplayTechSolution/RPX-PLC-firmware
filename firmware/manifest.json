@@ -1,11 +1,11 @@
 {
-  "version": "0.8.2",
-  "url": "https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/v0.8.2/rpx-plc.bin",
-  "sha256": "7906ebb6731507a33192457ca5776f07618829fa44e4cb49f4fe71ed77dfa043",
-  "size": 1434064,
-  "notes": "Controllo giornaliero facoltativo degli aggiornamenti: una versione nuova viene segnalata nel buffer di diagnostica e nell'ambiente di ingegneria (mai installata da sola). Configurazione: Aggiornamenti del firmware.",
-  "factory_sha256": "c01fc3dc029a3d82e7f383c955a82af622c9f9419bcd314fa568bcb89e226442",
-  "factory_size": 1565136,
+  "version": "0.8.3",
+  "url": "https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/v0.8.3/rpx-plc.bin",
+  "sha256": "426a4f61961eed9735e77b5ebe33bf4f4eebb510513bffc2cdccce9f8fece0e7",
+  "size": 1436128,
+  "notes": "Logo RPX-PLC sul display all'accensione; barra di avanzamento dell'aggiornamento sul display e nella pagina Firmware dell'ambiente di ingegneria.",
+  "factory_sha256": "80ed421f37a5404e584ddb3f550ce6359add2830a96b58c269b487429a38bb29",
+  "factory_size": 1567200,
   "date": "2026-11-23",
-  "manual": "RPX-PLC-Manuale-0.8.2.pdf"
+  "manual": "RPX-PLC-Manuale-0.8.3.pdf"
 }
