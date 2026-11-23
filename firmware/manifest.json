@@ -1,10 +1,10 @@
 {
-  "version": "0.8.0",
-  "url": "https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/v0.8.0/rpx-plc.bin",
-  "sha256": "73b274106170c71f2506d7fff0af6716f23bd7000b495e265920636d849cfa3f",
-  "size": 1431648,
-  "notes": "Prima versione pubblica: aggiornamento del firmware via rete, orologio con NTP (RD_LOC_T, RD_SYS_T, WR_SYS_T), seriale libera RS485 (SEND_PTP, RCV_PTP), backup e ripristino, Modbus TCP/RTU, ritenzione e protezione.",
-  "factory_sha256": "f812f599c89d7047e9573d7e912c751505f75522477d9b3fbd1b7c0b657bd76d",
-  "factory_size": 1562720,
+  "version": "0.8.1",
+  "url": "https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/v0.8.1/rpx-plc.bin",
+  "sha256": "61e8482cf34d5edf034a8c406341da4ab3a9bf1816eb858f999accf1f841fa93",
+  "size": 1432912,
+  "notes": "Impostazioni di fabbrica tenendo premuto il tasto BOOT per 10 secondi (conto alla rovescia sul display, LED bianco lampeggiante, riavvio al rilascio). Display predefinito SH1106 da 1,3 pollici.",
+  "factory_sha256": "837d2377d66b29602bb019df59e292da672b0a4b26366efb5df834f698e4626c",
+  "factory_size": 1563984,
   "date": "2026-11-23"
 }
