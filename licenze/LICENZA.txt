@@ -1,0 +1,56 @@
+LICENZA D'USO DEL FIRMWARE RPX-PLC
+Copyright (c) 2026 Replay Tech Solution. Tutti i diritti riservati.
+
+Il firmware RPX-PLC, l'ambiente di ingegneria incluso nel firmware, il simulatore e la documentazione (insieme,
+"il Software") sono concessi in uso, gratuitamente e senza esclusiva, alle condizioni seguenti. Installando o usando
+il Software accetti queste condizioni.
+
+1. USO CONSENTITO
+   Puoi installare e usare il Software su schede compatibili (Waveshare ESP32-S3-ETH-8DI-8RO e equivalenti), anche
+   in impianti e macchine a uso professionale, e distribuirne copie identiche e complete, comprese le note sulle
+   licenze. Non puoi vendere il Software da solo né presentarlo come opera tua.
+
+2. COMPONENTI DI TERZE PARTI
+   Il Software contiene componenti di terze parti distribuiti con licenze proprie (Apache 2.0, MIT, BSD, MPL 2.0 e
+   altre), elencate nel file LICENZE-TERZE-PARTI-FIRMWARE.txt, consultabile anche dal PLC (menu ? -> Licenze). Per
+   quei componenti valgono le rispettive licenze, che prevalgono su questa dove sono in contrasto.
+   Il programma RPX-PLC Flasher per Windows è distribuito separatamente con licenza GNU GPL versione 2 o successiva.
+
+3. NON È UN DISPOSITIVO DI SICUREZZA
+   RPX-PLC non è un controllore di sicurezza e non è certificato per funzioni di sicurezza (per esempio secondo
+   EN ISO 13849 o IEC 62061). Non usarlo per funzioni da cui dipende la sicurezza di persone, animali o cose:
+   arresto di emergenza, ripari, barriere, interblocchi di sicurezza. Queste funzioni vanno realizzate con
+   dispositivi e circuiti di sicurezza indipendenti dal PLC. Chi progetta l'impianto o la macchina è responsabile
+   della sua valutazione dei rischi e della conformità alle norme applicabili.
+
+4. ESCLUSIONE DI GARANZIA
+   Il Software è fornito "così com'è", senza garanzie di alcun tipo, espresse o implicite, comprese quelle di
+   funzionamento senza errori, di idoneità a uno scopo particolare e di non violazione di diritti di terzi.
+   Prima di metterlo in servizio verifica il programma e il funzionamento dell'impianto in condizioni sicure.
+
+5. LIMITAZIONE DI RESPONSABILITÀ
+   Nei limiti massimi consentiti dalla legge, Replay Tech Solution non risponde di danni diretti o indiretti, perdita
+   di produzione, di dati o di profitto derivanti dall'uso o dall'impossibilità di usare il Software. Restano salvi
+   i casi in cui la responsabilità non può essere esclusa o limitata per legge (per esempio dolo o colpa grave, e
+   i diritti inderogabili dei consumatori).
+
+6. AGGIORNAMENTI
+   Il Software può controllare su Internet se esistono versioni nuove (funzione disattivabile nelle proprietà della
+   CPU); l'installazione avviene solo su comando dell'utente. Il controllo invia a GitHub soltanto una normale
+   richiesta HTTPS, senza dati del programma o dell'impianto.
+
+7. MARCHI
+   SIEMENS, SIMATIC, S7-1200, TIA Portal e PLCSIM sono marchi di Siemens AG. Waveshare è un marchio di Waveshare
+   Electronics; ESP32 è un marchio di Espressif Systems. RPX-PLC non è affiliato a queste aziende né approvato da
+   esse: i loro nomi sono citati solo per descrivere la compatibilità e il modo di lavorare.
+
+8. LEGGE APPLICABILE
+   Questa licenza è regolata dalla legge italiana.
+
+------------------------------------------------------------------------------------------------------------------
+RPX-PLC FIRMWARE LICENSE (English summary; the Italian text above prevails)
+Free, non-exclusive license to install and use the Software on compatible boards and to redistribute unmodified,
+complete copies. Third-party components are under their own licenses (LICENZE-TERZE-PARTI-FIRMWARE.txt). RPX-PLC is
+NOT a safety controller and must not be used for safety functions. Provided "AS IS", without warranty of any kind;
+liability is excluded to the maximum extent permitted by law. SIEMENS, SIMATIC, S7-1200, TIA Portal and PLCSIM are
+trademarks of Siemens AG; RPX-PLC is not affiliated with or endorsed by Siemens.
