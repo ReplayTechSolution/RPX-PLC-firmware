@@ -1,10 +1,11 @@
 {
-  "version": "0.8.1",
-  "url": "https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/v0.8.1/rpx-plc.bin",
-  "sha256": "61e8482cf34d5edf034a8c406341da4ab3a9bf1816eb858f999accf1f841fa93",
-  "size": 1432912,
-  "notes": "Impostazioni di fabbrica tenendo premuto il tasto BOOT per 10 secondi (conto alla rovescia sul display, LED bianco lampeggiante, riavvio al rilascio). Display predefinito SH1106 da 1,3 pollici.",
-  "factory_sha256": "837d2377d66b29602bb019df59e292da672b0a4b26366efb5df834f698e4626c",
-  "factory_size": 1563984,
-  "date": "2026-11-23"
+  "version": "0.8.2",
+  "url": "https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/v0.8.2/rpx-plc.bin",
+  "sha256": "7906ebb6731507a33192457ca5776f07618829fa44e4cb49f4fe71ed77dfa043",
+  "size": 1434064,
+  "notes": "Controllo giornaliero facoltativo degli aggiornamenti: una versione nuova viene segnalata nel buffer di diagnostica e nell'ambiente di ingegneria (mai installata da sola). Configurazione: Aggiornamenti del firmware.",
+  "factory_sha256": "c01fc3dc029a3d82e7f383c955a82af622c9f9419bcd314fa568bcb89e226442",
+  "factory_size": 1565136,
+  "date": "2026-11-23",
+  "manual": "RPX-PLC-Manuale-0.8.2.pdf"
 }
