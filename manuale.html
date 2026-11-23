@@ -30,7 +30,7 @@
 <p>RPX-PLC trasforma la scheda <strong>Waveshare ESP32-S3-ETH-8DI-8RO</strong> in un controllore programmabile con 8 ingressi digitali,
 8 uscite a relè, RS485, Ethernet e WiFi. Si programma dal browser con un ambiente di ingegneria in stile TIA Portal, in
 <strong>Ladder (LAD)</strong>, <strong>SCL</strong> e <strong>SFC</strong>, che si possono usare insieme nello stesso progetto.</p>
-<p>Questo manuale vale per il firmware <strong>0.8.3</strong>.</p>
+<p>Questo manuale vale per il firmware <strong>0.8.4</strong>.</p>
 <h2 id="1-la-scheda">1. La scheda</h2>
 <table>
 <thead>
@@ -172,6 +172,8 @@ sue proprietà.</p>
 <li><strong>Aggiornamenti del firmware</strong>: controllo giornaliero delle versioni nuove (attivo di serie).</li>
 <li><strong>Avviamento</strong>: a caldo (con i dati a ritenzione), a freddo, oppure rimani in STOP.</li>
 <li><strong>Ciclo</strong>: tempo di ciclo massimo e minimo.</li>
+<li><strong>Merker di sistema e di clock</strong>: byte dei bit di sistema (<code>FirstScan</code>, <code>AlwaysTRUE</code>...) e byte di clock
+  (lampeggi da 10 Hz a 0,5 Hz), come nelle proprietà di una CPU S7-1200 (capitolo 5).</li>
 <li><strong>Protezione</strong>: livello di accesso senza password.</li>
 </ul>
 <p>Rete, Modbus TCP, display e server NTP valgono dal riavvio successivo del PLC; il resto vale subito dopo il
@@ -215,6 +217,114 @@ caricamento.</p>
 struttura <code>DTL</code> (data e ora).</p>
 <p>Le variabili marcate <strong>a ritenzione</strong> (nella tabella delle variabili o nei DB) conservano il valore dopo uno
 spegnimento: il PLC le salva ogni 10 secondi se sono cambiate, e subito allo STOP o a un riavvio comandato.</p>
+<h3 id="merker-di-sistema-e-di-clock">Merker di sistema e di clock</h3>
+<p>Come in TIA Portal si attivano nelle proprietà della CPU (<strong>Configurazione dispositivi</strong> → <strong>Merker di sistema e di
+clock</strong>), scegliendo per ciascuno un byte di merker (di base <code>%MB1</code> per il sistema e <code>%MB0</code> per il clock; i due byte
+devono essere diversi). Appena attivati, nella <strong>tabella delle variabili standard</strong> compaiono le variabili con i nomi
+di TIA: <code>System_Byte</code> e i suoi bit, <code>Clock_Byte</code> e i suoi bit. Se cambi l'indirizzo le variabili si spostano; se
+disattivi il byte spariscono. Le puoi rinominare; se un nome è già usato da una tua variabile si aggiunge <code>_1</code>.</p>
+<p>Byte di sistema:</p>
+<table>
+<thead>
+<tr>
+<th>Bit</th>
+<th>Variabile</th>
+<th>Funzione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.0</td>
+<td><code>FirstScan</code></td>
+<td>1 solo nel primo ciclo dopo l'avviamento (dopo gli OB di avviamento)</td>
+</tr>
+<tr>
+<td>.1</td>
+<td><code>DiagStatusUpdate</code></td>
+<td>1 per un ciclo dopo una nuova voce nel buffer di diagnostica</td>
+</tr>
+<tr>
+<td>.2</td>
+<td><code>AlwaysTRUE</code></td>
+<td>sempre 1</td>
+</tr>
+<tr>
+<td>.3</td>
+<td><code>AlwaysFALSE</code></td>
+<td>sempre 0</td>
+</tr>
+<tr>
+<td>.4–.7</td>
+<td>–</td>
+<td>riservati (0)</td>
+</tr>
+</tbody>
+</table>
+<p>Byte di clock (onde quadre con impulso e pausa uguali, 1:1):</p>
+<table>
+<thead>
+<tr>
+<th>Bit</th>
+<th>Variabile</th>
+<th>Frequenza</th>
+<th>Periodo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.0</td>
+<td><code>Clock_10Hz</code></td>
+<td>10 Hz</td>
+<td>0,1 s</td>
+</tr>
+<tr>
+<td>.1</td>
+<td><code>Clock_5Hz</code></td>
+<td>5 Hz</td>
+<td>0,2 s</td>
+</tr>
+<tr>
+<td>.2</td>
+<td><code>Clock_2.5Hz</code></td>
+<td>2,5 Hz</td>
+<td>0,4 s</td>
+</tr>
+<tr>
+<td>.3</td>
+<td><code>Clock_2Hz</code></td>
+<td>2 Hz</td>
+<td>0,5 s</td>
+</tr>
+<tr>
+<td>.4</td>
+<td><code>Clock_1.25Hz</code></td>
+<td>1,25 Hz</td>
+<td>0,8 s</td>
+</tr>
+<tr>
+<td>.5</td>
+<td><code>Clock_1Hz</code></td>
+<td>1 Hz</td>
+<td>1 s</td>
+</tr>
+<tr>
+<td>.6</td>
+<td><code>Clock_0.625Hz</code></td>
+<td>0,625 Hz</td>
+<td>1,6 s</td>
+</tr>
+<tr>
+<td>.7</td>
+<td><code>Clock_0.5Hz</code></td>
+<td>0,5 Hz</td>
+<td>2 s</td>
+</tr>
+</tbody>
+</table>
+<p>I bit di clock seguono l'orologio della CPU e cambiano anche a metà ciclo, non solo all'inizio: per contare gli
+impulsi usa un fronte (<code>P_TRIG</code>, <code>R_TRIG</code>). I nomi con il punto si scrivono fra virgolette, per esempio
+<code>"Clock_0.5Hz"</code>. Il programma non deve scrivere in questi byte: la CPU li sovrascrive. Nel simulatore funzionano allo
+stesso modo.</p>
 <h2 id="6-blocchi">6. Blocchi</h2>
 <table>
 <thead>
