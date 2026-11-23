@@ -42,7 +42,7 @@
 </thead>
 <tbody>
 <tr>
-<td>Ingressi DI1–DI8 (optoisolati, attivi verso DGND)</td>
+<td>Ingressi DI1–DI8 (optoisolati, 5–36 V)</td>
 <td>ingressi digitali</td>
 <td><code>%I0.0</code>–<code>%I0.7</code></td>
 </tr>
@@ -78,6 +78,15 @@
 </tr>
 </tbody>
 </table>
+<p>Collegamento degli ingressi (morsetti COM, DGND, DI1–DI8):</p>
+<ul>
+<li><strong>contatto pulito</strong> (pulsanti, finecorsa senza alimentazione): il contatto va fra DIx e <strong>DGND</strong>; COM resta libero;</li>
+<li><strong>segnale alimentato</strong> da 5 a 36 V (sensori, uscite di altri apparecchi): l'alimentatore esterno va fra <strong>COM</strong> e il
+  comune dei segnali. I fotoaccoppiatori sono bidirezionali, quindi vanno bene tutti e due i versi: con COM al 0 V
+  l'ingresso si accende con il segnale <strong>alto</strong> (+24 V, sensori PNP); con COM al +24 V si accende con il segnale
+  <strong>basso</strong> (sensori NPN). DGND in questo caso non si collega.</li>
+</ul>
+<p>In tutti i casi <code>%I0.x</code> vale TRUE quando l'ingresso è acceso.</p>
 <p>Il LED di stato è verde in RUN, arancio in STOP, rosso in STOP per errore; lampeggia in giallo (MAINT) con un
 forzamento attivo.</p>
 <h2 id="2-prima-installazione">2. Prima installazione</h2>
