@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manuale RPX-PLC</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 2l11 6-11 6z' fill='%230b8a43'/%3E%3C/svg%3E">
+<style>
+  :root { --green: #0b8a43; --red: #e01a2f; --ink: #1d2329; --muted: #5d6873; --line: #d5dbe1; --bg: #f3f5f7; --card: #fff; --code: #eef1f4; }
+  @media (prefers-color-scheme: dark) { :root { --ink: #e6eaee; --muted: #9aa6b1; --line: #33404c; --bg: #12171c; --card: #1a2128; --code: #222b33; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.6 "Segoe UI", system-ui, sans-serif; color: var(--ink); background: var(--bg); }
+  header { background: #0f1418; color: #fff; padding: 14px 16px; }
+  header a { color: #fff; text-decoration: none; font-weight: 700; font-size: 18px; }
+  .bar { height: 4px; background: linear-gradient(90deg, var(--green) 0 33%, #fff 33% 66%, var(--red) 66%); }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+  main { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 8px 24px 28px; margin: 20px auto 40px; }
+  nav ol { columns: 2; padding-left: 20px; }
+  @media (max-width: 640px) { nav ol { columns: 1; } main { padding: 4px 14px 20px; } }
+  h1 { font-size: 26px; } h2 { font-size: 19px; margin-top: 30px; border-bottom: 1px solid var(--line); padding-bottom: 4px; } h3 { font-size: 16px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; display: block; overflow-x: auto; }
+  th, td { border: 1px solid var(--line); padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: var(--code); }
+  code { background: var(--code); padding: 1px 5px; border-radius: 3px; font-family: Consolas, monospace; font-size: 13.5px; }
+  pre { background: var(--code); padding: 10px 12px; border-radius: 4px; overflow-x: auto; } pre code { padding: 0; }
+  a { color: var(--green); }
+</style></head>
+<body><header><div class="wrap"><a href="index.html">&#9654; RPX-PLC</a></div></header><div class="bar"></div>
+<div class="wrap"><main>
+<h1>Manuale d'uso di RPX-PLC</h1>
+<nav><b>Indice</b><ol><li><a href="#1-la-scheda">La scheda</a></li><li><a href="#2-prima-installazione">Prima installazione</a></li><li><a href="#3-lambiente-di-ingegneria">L'ambiente di ingegneria</a></li><li><a href="#4-configurazione-del-dispositivo">Configurazione del dispositivo</a></li><li><a href="#5-variabili">Variabili</a></li><li><a href="#6-blocchi">Blocchi</a></li><li><a href="#7-ladder-lad">Ladder (LAD)</a></li><li><a href="#8-scl">SCL</a></li><li><a href="#9-sfc-sequenze">SFC (sequenze)</a></li><li><a href="#10-simulatore">Simulatore</a></li><li><a href="#11-online-osservazione-tabelle-di-controllo-forzamento">Online: osservazione, tabelle di controllo, forzamento</a></li><li><a href="#12-modbus">Modbus</a></li><li><a href="#13-seriale-libera-rs485">Seriale libera (RS485)</a></li><li><a href="#14-ora-del-giorno">Ora del giorno</a></li><li><a href="#15-protezione">Protezione</a></li><li><a href="#16-aggiornamento-del-firmware">Aggiornamento del firmware</a></li><li><a href="#17-backup-e-ripristino">Backup e ripristino</a></li><li><a href="#18-diagnostica-e-problemi-frequenti">Diagnostica e problemi frequenti</a></li></ol></nav>
+
+<p>RPX-PLC trasforma la scheda <strong>Waveshare ESP32-S3-ETH-8DI-8RO</strong> in un controllore programmabile con 8 ingressi digitali,
+8 uscite a relè, RS485, Ethernet e WiFi. Si programma dal browser con un ambiente di ingegneria in stile TIA Portal, in
+<strong>Ladder (LAD)</strong>, <strong>SCL</strong> e <strong>SFC</strong>, che si possono usare insieme nello stesso progetto.</p>
+<p>Questo manuale vale per il firmware <strong>0.8</strong>.</p>
+<h2 id="1-la-scheda">1. La scheda</h2>
+<table>
+<thead>
+<tr>
+<th>Parte</th>
+<th>Funzione nel PLC</th>
+<th>Indirizzi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ingressi DI1–DI8 (optoisolati, attivi verso DGND)</td>
+<td>ingressi digitali</td>
+<td><code>%I0.0</code>–<code>%I0.7</code></td>
+</tr>
+<tr>
+<td>Relè R1–R8 (morsetti NO, COM, NC)</td>
+<td>uscite digitali</td>
+<td><code>%Q0.0</code>–<code>%Q0.7</code></td>
+</tr>
+<tr>
+<td>RS485 (A, B, GND)</td>
+<td>Modbus RTU master o slave, seriale libera</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Ethernet</td>
+<td>ambiente di ingegneria, Modbus TCP</td>
+<td>–</td>
+</tr>
+<tr>
+<td>WiFi (antenna SMA)</td>
+<td>client della rete o access point</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Orologio PCF85063 con batteria</td>
+<td>ora del giorno anche senza rete</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Display OLED (facoltativo, I²C)</td>
+<td>stato, I/O, rete, messaggi del programma</td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<p>Il LED di stato è verde in RUN, arancio in STOP, rosso in STOP per errore; lampeggia in giallo (MAINT) con un
+forzamento attivo.</p>
+<h2 id="2-prima-installazione">2. Prima installazione</h2>
+<p>Una scheda nuova si programma dal browser:</p>
+<ol>
+<li>apri <a href="https://replaytechsolution.github.io/RPX-PLC-firmware/">https://replaytechsolution.github.io/RPX-PLC-firmware/</a> con <strong>Chrome</strong> o <strong>Edge</strong>;</li>
+<li>collega la scheda al PC con un cavo USB-C e premi <strong>Installa</strong>;</li>
+<li>scegli la porta della scheda e conferma; per partire da zero scegli <strong>Cancella il dispositivo</strong>.</li>
+</ol>
+<p>Dopo il riavvio il PLC ha le impostazioni di fabbrica:</p>
+<ul>
+<li><strong>Ethernet</strong> con indirizzo da DHCP (il nome in rete è <code>rpx-plc</code>);</li>
+<li><strong>access point WiFi</strong> <code>RPX-PLC-xxxx</code>, password <code>rpx-plc-setup</code>, indirizzo <code>http://192.168.4.1</code>;</li>
+<li>nessun programma, CPU in STOP, nessuna protezione.</li>
+</ul>
+<p>L'indirizzo Ethernet si legge sul display, oppure nella tabella DHCP del router.</p>
+<h2 id="3-lambiente-di-ingegneria">3. L'ambiente di ingegneria</h2>
+<p>Apri nel browser l'indirizzo del PLC (per esempio <code>http://192.168.1.116</code>): l'ambiente di ingegneria è dentro la
+scheda, non serve installare nulla. Quando è aperto dal PLC, <strong>Carica nel dispositivo</strong> e <strong>Collegamento online</strong>
+lavorano direttamente su quel PLC.</p>
+<p>La <strong>vista portale</strong> guida i primi passi (nuovo progetto, configurazione, programma). La <strong>vista progetto</strong> è
+quella di lavoro:</p>
+<ul>
+<li>a sinistra l'<strong>albero del progetto</strong>: configurazione del dispositivo, blocchi, variabili, tabelle di controllo;</li>
+<li>al centro gli <strong>editor</strong>;</li>
+<li>a destra il <strong>catalogo delle istruzioni</strong>, da cui si trascinano gli elementi;</li>
+<li>in basso la <strong>finestra di ispezione</strong>: proprietà, risultati della compilazione, diagnostica.</li>
+</ul>
+<p>Il progetto si salva nel browser (<strong>Salva progetto</strong>, Ctrl+S) e si esporta in un file <code>.rpxproj</code>
+(Progetto → Esporta). Il progetto viene salvato anche nel PLC a ogni caricamento: con
+<strong>Online → Carica dal dispositivo</strong> lo si riapre da qualsiasi PC.</p>
+<h3 id="comandi-principali">Comandi principali</h3>
+<table>
+<thead>
+<tr>
+<th>Comando</th>
+<th>Tasti</th>
+<th>Effetto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compila</td>
+<td>Ctrl+B</td>
+<td>verifica il programma e mostra gli errori</td>
+</tr>
+<tr>
+<td>Carica nel dispositivo</td>
+<td>Ctrl+L</td>
+<td>compila e invia programma, progetto e configurazione</td>
+</tr>
+<tr>
+<td>Collegamento online</td>
+<td>–</td>
+<td>osservazione dei valori negli editor</td>
+</tr>
+<tr>
+<td>Avvia simulazione</td>
+<td>–</td>
+<td>esegue il programma nel browser (RPX-PLCSIM), senza scheda</td>
+</tr>
+<tr>
+<td>RUN / STOP</td>
+<td>–</td>
+<td>avvia o ferma la CPU</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-configurazione-del-dispositivo">4. Configurazione del dispositivo</h2>
+<p>Doppio clic su <strong>Configurazione dispositivi</strong>: la grafica della scheda mostra le parti; un clic su una parte apre le
+sue proprietà.</p>
+<ul>
+<li><strong>Ethernet</strong>: DHCP oppure indirizzo fisso. La rete viene inviata al PLC solo se la cambi nel progetto: finché non
+  la tocchi, il PLC tiene la sua.</li>
+<li><strong>WiFi</strong>: spento, client della rete dell'impianto oppure access point proprio.</li>
+<li><strong>RS485</strong>: protocollo, velocità, parità, bit di stop.</li>
+<li><strong>Modbus TCP</strong>: server attivo, porta, numero di connessioni.</li>
+<li><strong>Ingressi</strong>: ritardo del filtro.</li>
+<li><strong>Uscite</strong>: reazione allo STOP (relè diseccitati o ultimo valore).</li>
+<li><strong>Display OLED</strong>: controller (SSD1306 o SH1106 da 1,3"), pagine, luminosità.</li>
+<li><strong>Ora del giorno</strong>: server NTP, fuso orario, ora legale.</li>
+<li><strong>Avviamento</strong>: a caldo (con i dati a ritenzione), a freddo, oppure rimani in STOP.</li>
+<li><strong>Ciclo</strong>: tempo di ciclo massimo e minimo.</li>
+<li><strong>Protezione</strong>: livello di accesso senza password.</li>
+</ul>
+<p>Rete, Modbus TCP, display e server NTP valgono dal riavvio successivo del PLC; il resto vale subito dopo il
+caricamento.</p>
+<h2 id="5-variabili">5. Variabili</h2>
+<p>Nella <strong>tabella delle variabili</strong> ogni ingresso, relè o merker riceve un nome: nel programma si scrive
+<code>"Marcia"</code> invece di <code>%I0.0</code>. Le tabelle standard contengono già <code>Ingresso_1</code>…<code>Ingresso_8</code> e <code>Rele_1</code>…<code>Rele_8</code>.</p>
+<p>Aree di memoria:</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Esempio</th>
+<th>Contenuto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td><code>%I0.3</code>, <code>%IB0</code></td>
+<td>ingressi (immagine letta all'inizio del ciclo)</td>
+</tr>
+<tr>
+<td>Q</td>
+<td><code>%Q0.5</code>, <code>%QB0</code></td>
+<td>relè (scritti alla fine del ciclo)</td>
+</tr>
+<tr>
+<td>M</td>
+<td><code>%M10.0</code>, <code>%MW20</code>, <code>%MD40</code></td>
+<td>merker, 4 KB</td>
+</tr>
+<tr>
+<td>DB</td>
+<td><code>"Dati".Livello</code></td>
+<td>blocchi dati</td>
+</tr>
+</tbody>
+</table>
+<p>Tipi di dati: <code>Bool</code>, <code>Byte</code>, <code>USInt</code>, <code>Char</code>, <code>Word</code>, <code>Int</code>, <code>UInt</code>, <code>DWord</code>, <code>DInt</code>, <code>UDInt</code>, <code>Real</code>, <code>Time</code> e la
+struttura <code>DTL</code> (data e ora).</p>
+<p>Le variabili marcate <strong>a ritenzione</strong> (nella tabella delle variabili o nei DB) conservano il valore dopo uno
+spegnimento: il PLC le salva ogni 10 secondi se sono cambiate, e subito allo STOP o a un riavvio comandato.</p>
+<h2 id="6-blocchi">6. Blocchi</h2>
+<table>
+<thead>
+<tr>
+<th>Blocco</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OB1 "Main"</td>
+<td>programma ciclico, eseguito di continuo</td>
+</tr>
+<tr>
+<td>OB100</td>
+<td>eseguito una volta all'avviamento</td>
+</tr>
+<tr>
+<td>FC</td>
+<td>funzione senza memoria propria (parametri di ingresso e uscita)</td>
+</tr>
+<tr>
+<td>FB</td>
+<td>blocco con memoria: ogni richiamo ha il suo DB di istanza</td>
+</tr>
+<tr>
+<td>DB</td>
+<td>dati globali, oppure istanza di un FB o di un'istruzione</td>
+</tr>
+</tbody>
+</table>
+<p>Ogni blocco ha un'<strong>interfaccia</strong> (Input, Output, InOut, Static, Temp, Constant) e un <strong>corpo</strong> in LAD, SCL o SFC.
+Un FB o una FC si richiama trascinandolo dall'albero del progetto dentro un segmento LAD, oppure scrivendone il nome
+in SCL. Negli FB si possono dichiarare <strong>multi-istanze</strong> nella sezione Static (es. un temporizzatore <code>IEC_TIMER</code>).</p>
+<h2 id="7-ladder-lad">7. Ladder (LAD)</h2>
+<p>Un programma LAD è fatto di <strong>segmenti</strong>. In ogni segmento la corrente parte dalla barra di sinistra, attraversa
+contatti e box, e arriva alle bobine.</p>
+<h3 id="inserire-spostare-cancellare">Inserire, spostare, cancellare</h3>
+<ul>
+<li><strong>Dove inserire</strong>: fai clic su un elemento (il nuovo andrà dopo di lui) oppure su un <strong>punto del filo</strong>: passandoci
+  sopra compare un quadratino verde; il clic lo seleziona e l'inserimento avviene lì, anche prima del primo elemento.</li>
+<li><strong>Cosa inserire</strong>: preferiti in alto nell'editor, tasti (Shift+F2 contatto NA, Shift+F3 contatto NC, Shift+F7
+  bobina, Shift+F5 box vuoto, Shift+F8 ramo), oppure trascinamento dal catalogo: rilasciando, l'elemento va nel
+  punto del filo evidenziato in verde.</li>
+<li><strong>Spostare</strong>: trascina un elemento già posato e rilascialo sul quadratino verde del punto desiderato, anche in un
+  ramo parallelo o in un altro segmento.</li>
+<li><strong>Rami paralleli</strong>: seleziona uno o più elementi consecutivi e premi Shift+F8; Shift+F9 aggiunge un altro ramo.</li>
+<li><strong>Cancellare</strong>: Canc. <strong>Annulla/Ripeti</strong>: Ctrl+Z / Ctrl+Y.</li>
+</ul>
+<h3 id="operandi">Operandi</h3>
+<p>Un clic sul testo rosso sopra un elemento apre il campo dell'operando. Il campo indica il tipo atteso e un esempio.
+Si può scrivere un nome di variabile (anche senza virgolette), un indirizzo (<code>%M10.0</code>) o una costante. Invio
+conferma, Tab passa all'operando successivo, Esc annulla.</p>
+<h3 id="temporizzatori">Temporizzatori</h3>
+<p>I box <code>TON</code>, <code>TOF</code>, <code>TP</code>, <code>TONR</code> chiedono un DB di istanza (proposto in automatico). L'ingresso <strong>IN</strong> riceve il
+flusso del segmento: davanti al box si mette il contatto che lo comanda. Il tempo va nel pin <strong>PT</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Scrivi</th>
+<th>Diventa</th>
+<th>Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>T#5s</code></td>
+<td><code>T#5s</code></td>
+<td>5 secondi</td>
+</tr>
+<tr>
+<td><code>5s</code></td>
+<td><code>T#5s</code></td>
+<td>anche senza <code>T#</code></td>
+</tr>
+<tr>
+<td><code>1m30s</code></td>
+<td><code>T#1m30s</code></td>
+<td>1 minuto e 30 secondi</td>
+</tr>
+<tr>
+<td><code>500ms</code></td>
+<td><code>T#500ms</code></td>
+<td>mezzo secondo</td>
+</tr>
+<tr>
+<td><code>5000</code></td>
+<td><code>T#5s</code></td>
+<td>un numero senza unità è in <strong>millisecondi</strong>, come in TIA Portal</td>
+</tr>
+</tbody>
+</table>
+<p>Esempio: <code>"Ingresso_1"</code> ─┤ ├─ [TOF, PT = T#5s] ─( <code>"Rele_1"</code> ): il relè si accende con l'ingresso e resta acceso
+5 secondi dopo la sua apertura.</p>
+<h3 id="altre-istruzioni">Altre istruzioni</h3>
+<p>Contatori (<code>CTU</code>, <code>CTD</code>, <code>CTUD</code>), fronti (<code>-|P|-</code>, <code>-|N|-</code>, <code>R_TRIG</code>, <code>F_TRIG</code>), confronti (<code>CMP</code>, <code>IN_RANGE</code>),
+matematica (<code>ADD</code>, <code>SUB</code>, <code>MUL</code>, <code>DIV</code>, <code>MOD</code>, <code>MIN</code>, <code>MAX</code>, <code>LIMIT</code>, <code>ABS</code>, <code>SQRT</code>), trasferimento (<code>MOVE</code>),
+conversione (<code>CONVERT</code>), logica a parola (<code>AND</code>, <code>OR</code>, <code>XOR</code>, <code>INV</code>, <code>SHL</code>, <code>SHR</code>), display (<code>DISP_MSG</code>).</p>
+<h2 id="8-scl">8. SCL</h2>
+<p>SCL è un linguaggio testuale simile al Pascal:</p>
+<pre><code>IF &quot;Marcia&quot; AND NOT &quot;Arresto&quot; THEN
+    &quot;Motore&quot; := TRUE;
+ELSIF &quot;Arresto&quot; THEN
+    &quot;Motore&quot; := FALSE;
+END_IF;
+
+&quot;Ritardo_DB&quot;.TON(IN := &quot;Motore&quot;, PT := T#3s, Q =&gt; &quot;Ventola&quot;);
+
+FOR #i := 1 TO 10 DO
+    #Somma := #Somma + #i;
+END_FOR;
+</code></pre>
+<p>Sono disponibili <code>IF</code>, <code>CASE</code>, <code>FOR</code>, <code>WHILE</code>, <code>REPEAT</code>, <code>EXIT</code>, <code>RETURN</code>, le funzioni matematiche e di conversione
+(<code>ABS</code>, <code>SQRT</code>, <code>MIN</code>, <code>MAX</code>, <code>LIMIT</code>, <code>INT_TO_REAL</code>…), i richiami di temporizzatori, contatori, FB e FC. Gli errori
+indicano la riga. Un ciclo che non termina porta la CPU in STOP (tempo di ciclo superato).</p>
+<h2 id="9-sfc-sequenze">9. SFC (sequenze)</h2>
+<p>Un blocco SFC è un FB che descrive una <strong>sequenza di passi</strong>. Ogni passo ha azioni con qualificatore:</p>
+<table>
+<thead>
+<tr>
+<th>Qualificatore</th>
+<th>Effetto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N</td>
+<td>attiva finché il passo è attivo</td>
+</tr>
+<tr>
+<td>S / R</td>
+<td>imposta / resetta (resta impostato fino al reset)</td>
+</tr>
+<tr>
+<td>D</td>
+<td>ritardata (con un tempo)</td>
+</tr>
+<tr>
+<td>L</td>
+<td>limitata nel tempo</td>
+</tr>
+</tbody>
+</table>
+<p>Le <strong>transizioni</strong> sono condizioni scritte in LAD. Sono possibili rami alternativi (uno solo) e simultanei (tutti
+insieme). Il blocco si richiama da OB1 come un FB; gli ingressi <code>INIT_SQ</code> e <code>OFF_SQ</code> riportano la sequenza al passo
+iniziale o la spengono. Ogni passo ha il tempo di attività <code>#Passo.T</code>.</p>
+<h2 id="10-simulatore">10. Simulatore</h2>
+<p><strong>Avvia simulazione</strong> esegue il programma nel browser. Il pannello del simulatore mostra ingressi (cliccabili),
+relè, LED e display; l'osservazione e le tabelle di controllo funzionano come con la scheda. Le comunicazioni
+(Modbus, seriale libera) nel simulatore rispondono con l'errore <code>16#8FFF</code>; l'orologio usa l'ora del PC.</p>
+<h2 id="11-online-osservazione-tabelle-di-controllo-forzamento">11. Online: osservazione, tabelle di controllo, forzamento</h2>
+<p>Con il <strong>collegamento online</strong> gli editor mostrano i valori: in LAD i tratti percorsi dalla corrente sono verdi, in
+SCL i valori compaiono a destra delle righe. Se il blocco nel PLC è diverso da quello nel progetto, l'editor chiede
+di compilare e caricare.</p>
+<p>Le <strong>tabelle di controllo</strong> elencano variabili da osservare e comandare: la colonna <em>Valore di comando</em> scrive un
+valore una volta; il <strong>forzamento</strong> di ingressi e relè impone un valore finché non lo togli (LED MAINT acceso).</p>
+<h2 id="12-modbus">12. Modbus</h2>
+<p>Il PLC è <strong>server Modbus TCP</strong> (porta 502) con questa mappa predefinita:</p>
+<table>
+<thead>
+<tr>
+<th>Oggetto Modbus</th>
+<th>Indirizzi</th>
+<th>Area del PLC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coil 0–7</td>
+<td>lettura e scrittura</td>
+<td>relè <code>%Q0.0</code>–<code>%Q0.7</code></td>
+</tr>
+<tr>
+<td>Ingressi discreti 0–7</td>
+<td>lettura</td>
+<td><code>%I0.0</code>–<code>%I0.7</code></td>
+</tr>
+<tr>
+<td>Holding register <em>n</em></td>
+<td>lettura e scrittura</td>
+<td><code>%MW(2n)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Dal programma, con gli stessi nomi e parametri di TIA Portal:</p>
+<ul>
+<li><code>MB_SERVER</code>: sceglie un'altra area per gli holding register;</li>
+<li><code>MB_CLIENT</code>: legge o scrive registri di un altro dispositivo Modbus TCP;</li>
+<li><code>MB_COMM_LOAD</code>: imposta velocità e parità della RS485;</li>
+<li><code>MB_MASTER</code>: richieste Modbus RTU sulla RS485;</li>
+<li><code>MB_SLAVE</code>: il PLC risponde come slave RTU.</li>
+</ul>
+<p><code>DATA_ADDR</code> segue la convenzione di TIA: 1–9999 coil, 10001–19999 ingressi, 30001–39999 input register,
+40001–49999 holding register. <code>STATUS</code> riporta i codici di TIA (<code>16#80C8</code> nessuna risposta, <code>16#8383</code> indirizzo non
+valido, …).</p>
+<h2 id="13-seriale-libera-rs485">13. Seriale libera (RS485)</h2>
+<p>Per dispositivi che non parlano Modbus (stampanti, lettori, protocolli ASCII):</p>
+<ul>
+<li><code>SEND_PTP</code> (con DB di istanza): sul fronte di salita di <code>REQ</code> invia <code>LENGTH</code> byte presi da <code>BUFFER</code>
+  (es. <code>%MB100</code> o un'area di un DB); <code>DONE</code> segnala la fine dell'invio;</li>
+<li><code>RCV_PTP</code> (con DB di istanza): finché <code>EN_R</code> è vero, ogni messaggio ricevuto va in <code>BUFFER</code> (al massimo <code>MAXLEN</code>
+  byte), <code>NDR</code> resta vero per un ciclo e <code>LENGTH</code> dice quanti byte sono arrivati.</li>
+</ul>
+<p>Un messaggio finisce quando sulla linea c'è una pausa di qualche millisecondo. Velocità, parità e bit di stop sono
+quelli della configurazione (o di <code>MB_COMM_LOAD</code>). Imposta il protocollo RS485 su <strong>Seriale libera</strong>.</p>
+<p>Esempio in SCL:</p>
+<pre><code>&quot;Tx&quot;.SEND_PTP(REQ := &quot;Invia&quot;, BUFFER := &quot;Messaggi&quot;.Testo, LENGTH := 12, DONE =&gt; &quot;Inviato&quot;);
+&quot;Rx&quot;.RCV_PTP(EN_R := TRUE, BUFFER := &quot;Messaggi&quot;.Risposta, MAXLEN := 64, NDR =&gt; &quot;Ricevuto&quot;, LENGTH =&gt; &quot;Lunghezza&quot;);
+</code></pre>
+<h2 id="14-ora-del-giorno">14. Ora del giorno</h2>
+<p>Il PLC tiene l'ora con l'orologio con batteria della scheda; con Internet la corregge ogni 6 ore da un server NTP.
+In <strong>Configurazione dispositivi → Ora del giorno</strong> scegli server NTP, fuso orario e ora legale automatica. Senza
+Internet si imposta da <strong>Online e diagnostica → Ora del PLC → Imposta l'ora del PC</strong>.</p>
+<p>Nel programma si legge con una variabile di tipo <code>DTL</code> (in Temp, Static o in un DB):</p>
+<table>
+<thead>
+<tr>
+<th>Istruzione</th>
+<th>Effetto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RD_SYS_T</code></td>
+<td>ora UTC</td>
+</tr>
+<tr>
+<td><code>RD_LOC_T</code></td>
+<td>ora locale (fuso e ora legale della configurazione)</td>
+</tr>
+<tr>
+<td><code>WR_SYS_T</code></td>
+<td>imposta l'ora (UTC)</td>
+</tr>
+</tbody>
+</table>
+<p>Membri di <code>DTL</code>: <code>YEAR</code>, <code>MONTH</code>, <code>DAY</code>, <code>WEEKDAY</code> (1 = domenica), <code>HOUR</code>, <code>MINUTE</code>, <code>SECOND</code>, <code>NANOSECOND</code>.</p>
+<pre><code>RD_LOC_T(OUT =&gt; #Adesso);
+&quot;Luci&quot; := #Adesso.HOUR &gt;= 19 OR #Adesso.HOUR &lt; 7;
+</code></pre>
+<p>In LAD il box <code>RD_LOC_T</code> ha l'uscita <code>OUT</code> a destra: scrivi lì la variabile DTL (es. <code>#Adesso</code>).</p>
+<h2 id="15-protezione">15. Protezione</h2>
+<p>In <strong>Protezione e sicurezza</strong> si sceglie cosa si può fare <strong>senza password</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Livello</th>
+<th>Senza password</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accesso completo</td>
+<td>tutto</td>
+</tr>
+<tr>
+<td>Accesso in lettura</td>
+<td>osservare e leggere il progetto; niente caricamenti né comandi</td>
+</tr>
+<tr>
+<td>Accesso HMI</td>
+<td>solo Modbus; l'ambiente di ingegneria chiede la password</td>
+</tr>
+<tr>
+<td>Nessun accesso</td>
+<td>niente (anche Modbus chiuso)</td>
+</tr>
+</tbody>
+</table>
+<p>La password vale 8 ore per browser. Nel PLC resta solo un'impronta della password, non la password stessa.</p>
+<h2 id="16-aggiornamento-del-firmware">16. Aggiornamento del firmware</h2>
+<p>In <strong>Online e diagnostica → Firmware</strong>:</p>
+<ul>
+<li><strong>Cerca aggiornamenti</strong> chiede a Internet l'ultima versione pubblicata; <strong>Installa</strong> la scarica e la installa;</li>
+<li><strong>Carica file .bin</strong> installa un file scaricato prima dalle
+  <a href="https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases">versioni pubblicate</a>, utile in impianti senza
+  Internet.</li>
+</ul>
+<p>Come in TIA Portal l'aggiornamento richiede la CPU in <strong>STOP</strong> (l'ambiente lo chiede prima di procedere). Il PLC
+verifica il file, si riavvia con la nuova versione e la conferma dopo 60 secondi di funzionamento; se la nuova
+versione non parte, il PLC torna da solo alla precedente e lo segnala nel buffer di diagnostica. Programma,
+configurazione e dati a ritenzione restano.</p>
+<h2 id="17-backup-e-ripristino">17. Backup e ripristino</h2>
+<p>In <strong>Online e diagnostica → Backup</strong>:</p>
+<ul>
+<li><strong>Salva backup</strong> scarica un file <code>.rpxbak</code> con configurazione, progetto, programma e dati a ritenzione; con
+  <em>includi il firmware</em> anche la versione del firmware in uso;</li>
+<li><strong>Ripristina backup</strong> rimette tutto in un PLC, anche su una scheda di ricambio: se il backup contiene un firmware
+  diverso, lo installa prima. Il PLC si riavvia.</li>
+</ul>
+<p>Il backup contiene anche le password del WiFi: conservalo come un documento riservato.</p>
+<h2 id="18-diagnostica-e-problemi-frequenti">18. Diagnostica e problemi frequenti</h2>
+<p><strong>Online e diagnostica</strong> mostra stato, tempi di ciclo, versione e il <strong>buffer di diagnostica</strong> (avviamenti, STOP,
+errori di programma, caricamenti, aggiornamenti).</p>
+<table>
+<thead>
+<tr>
+<th>Problema</th>
+<th>Cosa fare</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Il PLC non si trova in rete</td>
+<td>guarda l'indirizzo sul display, oppure collegati all'access point <code>RPX-PLC-xxxx</code></td>
+</tr>
+<tr>
+<td>La CPU va in STOP da sola</td>
+<td>leggi il buffer di diagnostica: di solito tempo di ciclo superato o errore di programma</td>
+</tr>
+<tr>
+<td>Un operando è rosso</td>
+<td>il tipo non va bene per quel pin (es. un Bool in PT): il campo indica il tipo atteso</td>
+</tr>
+<tr>
+<td>Il relè non scatta</td>
+<td>controlla in <em>Online e diagnostica</em> che i relè (TCA9554) rispondano; prova con una tabella di controllo</td>
+</tr>
+<tr>
+<td>L'ora è sbagliata</td>
+<td>controlla fuso e ora legale; senza Internet usa <em>Imposta l'ora del PC</em></td>
+</tr>
+<tr>
+<td>Modbus RTU <code>16#80C8</code></td>
+<td>nessuna risposta: verifica A/B, velocità, parità e indirizzo dello slave</td>
+</tr>
+<tr>
+<td>L'aggiornamento non parte</td>
+<td>porta la CPU in STOP; per Internet serve un gateway e un DNS validi</td>
+</tr>
+</tbody>
+</table>
+</main></div></body></html>

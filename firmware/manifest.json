@@ -1,0 +1,8 @@
+{
+  "version": "0.8.0",
+  "url": "https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases/download/v0.8.0/rpx-plc.bin",
+  "sha256": "73b274106170c71f2506d7fff0af6716f23bd7000b495e265920636d849cfa3f",
+  "size": 1431648,
+  "notes": "Prima versione pubblica: aggiornamento del firmware via rete, orologio con NTP (RD_LOC_T, RD_SYS_T, WR_SYS_T), seriale libera RS485 (SEND_PTP, RCV_PTP), backup e ripristino, Modbus TCP/RTU, ritenzione e protezione.",
+  "date": "2026-11-23"
+}

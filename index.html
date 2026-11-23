@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RPX-PLC – Installazione del firmware</title>
+<meta name="description" content="Installa il firmware RPX-PLC su una scheda Waveshare ESP32-S3-ETH-8DI-8RO direttamente dal browser.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 2l11 6-11 6z' fill='%230b8a43'/%3E%3C/svg%3E">
+<script type="module" src="https://unpkg.com/esp-web-tools@10.0.1/dist/web/install-button.js?module"></script>
+<style>
+  :root { --green: #0b8a43; --red: #e01a2f; --ink: #1d2329; --muted: #5d6873; --line: #d5dbe1; --bg: #f3f5f7; --card: #fff; }
+  @media (prefers-color-scheme: dark) { :root { --ink: #e6eaee; --muted: #9aa6b1; --line: #33404c; --bg: #12171c; --card: #1a2128; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.55 "Segoe UI", system-ui, sans-serif; color: var(--ink); background: var(--bg); }
+  header { background: #0f1418; color: #fff; padding: 18px 16px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 700; letter-spacing: .5px; }
+  .brand svg { flex: none; }
+  .bar { height: 4px; background: linear-gradient(90deg, var(--green) 0 33%, #fff 33% 66%, var(--red) 66%); }
+  main { padding: 24px 0 40px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; margin-bottom: 16px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  h2 { font-size: 17px; margin: 0 0 10px; }
+  ol { padding-left: 20px; margin: 0; }
+  li { margin: 4px 0; }
+  .muted { color: var(--muted); }
+  .install { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+  esp-web-install-button button { background: var(--green); color: #fff; border: 0; border-radius: 4px; padding: 11px 22px; font-size: 16px; font-weight: 600; cursor: pointer; }
+  .warn { border-left: 4px solid #c96a00; }
+  a { color: var(--green); }
+  code { background: rgba(127,127,127,.15); padding: 1px 5px; border-radius: 3px; }
+  footer { color: var(--muted); font-size: 13px; padding: 20px 0 30px; }
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="brand">
+  <svg width="26" height="26" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2l11 6-11 6z" fill="#0b8a43"/></svg>RPX<span style="font-weight:300">-PLC</span>
+</div><div class="muted" style="color:#9fb0bf;font-size:13px">Replay Tech Solution · firmware e installazione</div></div></header>
+<div class="bar"></div>
+<main class="wrap">
+  <div class="card">
+    <h1>Installa il firmware</h1>
+    <p class="muted" style="margin:0">Per una scheda <b>Waveshare ESP32-S3-ETH-8DI-8RO</b> nuova o da reinstallare. Per aggiornare un PLC già installato non serve: si fa dalla rete, nell'ambiente di ingegneria (<i>Online e diagnostica → Firmware</i>).</p>
+    <div class="install">
+      <esp-web-install-button manifest="firmware/manifest-webtools.json">
+        <span slot="unsupported">Questo browser non può programmare la scheda: usa <b>Chrome</b> o <b>Edge</b> su PC.</span>
+        <span slot="not-allowed">Serve una pagina sicura (https).</span>
+      </esp-web-install-button>
+      <span class="muted" id="ver">Versione: …</span>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Come si fa</h2>
+    <ol>
+      <li>Collega la scheda al PC con un cavo <b>USB-C</b> (porta USB della scheda). Non serve l'alimentazione a 24 V.</li>
+      <li>Premi <b>Installa</b>, scegli la porta della scheda (<i>USB JTAG/serial debug unit</i>) e conferma.</li>
+      <li>Se la scheda aveva già un programma, scegli <b>Cancella il dispositivo</b> per partire dalle impostazioni di fabbrica.</li>
+      <li>Al termine la scheda si riavvia: Ethernet in DHCP e access point WiFi <code>RPX-PLC-xxxx</code> (password <code>rpx-plc-setup</code>, indirizzo <code>http://192.168.4.1</code>).</li>
+      <li>Apri nel browser l'indirizzo del PLC: l'ambiente di ingegneria è già dentro la scheda.</li>
+    </ol>
+  </div>
+  <div class="card warn">
+    <h2>Se la porta non compare</h2>
+    <p style="margin:0">Chiudi i programmi che usano le porte seriali (monitor seriali, software di schermi LED, altri flasher). Se la scheda resta invisibile tieni premuto <b>BOOT</b>, premi e rilascia <b>RESET</b>, poi rilascia <b>BOOT</b> e riprova.</p>
+  </div>
+  <div class="card">
+    <h2>Documentazione</h2>
+    <p style="margin:0"><a href="manuale.html">Manuale d'uso di RPX-PLC</a> · <a href="https://github.com/ReplayTechSolution/RPX-PLC-firmware/releases">Versioni pubblicate</a></p>
+  </div>
+</main>
+<footer class="wrap">RPX-PLC è un prodotto Replay Tech Solution. Il flasher usa ESP Web Tools.</footer>
+<script>
+  fetch('firmware/manifest.json', { cache: 'no-store' }).then(r => r.json()).then(m => {
+    document.getElementById('ver').textContent = `Versione ${m.version}` + (m.date ? ` del ${m.date.split('-').reverse().join('/')}` : '');
+  }).catch(() => { document.getElementById('ver').textContent = ''; });
+</script>
+</body>
+</html>
