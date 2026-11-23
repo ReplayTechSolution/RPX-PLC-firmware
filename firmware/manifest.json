@@ -4,5 +4,7 @@
   "sha256": "73b274106170c71f2506d7fff0af6716f23bd7000b495e265920636d849cfa3f",
   "size": 1431648,
   "notes": "Prima versione pubblica: aggiornamento del firmware via rete, orologio con NTP (RD_LOC_T, RD_SYS_T, WR_SYS_T), seriale libera RS485 (SEND_PTP, RCV_PTP), backup e ripristino, Modbus TCP/RTU, ritenzione e protezione.",
+  "factory_sha256": "f812f599c89d7047e9573d7e912c751505f75522477d9b3fbd1b7c0b657bd76d",
+  "factory_size": 1562720,
   "date": "2026-11-23"
 }
